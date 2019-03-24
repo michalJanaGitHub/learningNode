@@ -1,1 +1,2 @@
 # learningNode
+Author : Michal Jána
