@@ -1,0 +1,24 @@
+{
+  "name": "ttopraha",
+  "version": "1.0.0",
+  "description": "desc",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test1": "cls",
+    "start": "node server-useHTTPS"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michalJanaGitHub/learningNode.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/michalJanaGitHub/learningNode/issues"
+  },
+  "homepage": "https://github.com/michalJanaGitHub/learningNode#readme",
+  "dependencies": {
+    "jsdom": "^14.0.0"
+  }
+}
