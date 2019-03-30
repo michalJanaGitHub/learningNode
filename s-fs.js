@@ -1,10 +1,17 @@
-let fs = require('fs');
-let content = 'Duis in proident proident quis culpa sint officia dolore ea cupidatat.'
-fs.writeFile('test.txt', content, (error, file) => {
-  console.log('file created');
 
-});
 
+// // create and append to file
+// let fs = require('fs');
+// let content = `
+//   Duis in proident proident quis culpa sint officia dolore ea cupidatat.
+// `;
+
+// fs.writeFile('test.txt', content.trim(), (error, file) => {
+//   console.log('file created');
+//   fs.appendFile('test.txt', 'Mon super contenu', (error, file) => {
+//     console.log('Content appended');
+//   });  
+// });
 
 
 
