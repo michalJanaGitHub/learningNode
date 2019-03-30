@@ -30,9 +30,12 @@ let req = https.request(options, (res) => {
     
     // const dom = new JSDOM(responseBody);
     const dom = new JSDOM(
-      '<!DOCTYPE html><p>Hello world</p><p1>Hello world 1</p1>');
-    console.log(dom.window.document.querySelector("p1").textContent)
-    console.log(responseBody);
+      // '<!DOCTYPE html><p>Hello world</p><p>Hello world 1</p>'
+      responseBody
+    );
+    console.log(dom.window.document.getElementsByTagName("p")[1].innerHTML);  
+    console.log(responseBody.substring(1,2000));
+    // console.log(responseBody);
   });
 });
 req.end();
