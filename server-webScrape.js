@@ -28,13 +28,8 @@ let req = https.request(options, (res) => {
     // fs.writeFileSync('nodejs.html', responseBody);
     // console.log('File created');
     
-    // const dom = new JSDOM(responseBody);
-    const dom = new JSDOM(
-      // '<!DOCTYPE html><p>Hello world</p><p>Hello world 1</p>'
-      responseBody
-    );
-    console.log(dom.window.document.getElementsByTagName("p")[1].innerHTML);  
-    console.log(responseBody.substring(1,2000));
+    const dom = new JSDOM( responseBody);
+    console.log(dom.window.document.getElementsByTagName("p")[3].innerHTML);  
     // console.log(responseBody);
   });
 });
