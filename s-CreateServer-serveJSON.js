@@ -19,7 +19,7 @@ let server = http.createServer((req, res) => {
     fileStream.pipe(res);
 
   } else {
-    res.writeHead(404, { 'Content-type': 'text/plain' });
+    res.writeHead(404, { 'Content-type': 'text/plain' }); // image/jpg
     res.end('404 not found');
   }
 }); 
