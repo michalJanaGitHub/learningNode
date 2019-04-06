@@ -60,7 +60,4 @@ let getPerson0 = () => {
   });
 };
 
-
-
-
 getPerson();
