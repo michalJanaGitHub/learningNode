@@ -130,7 +130,7 @@ exports.delete = (req, res, reqBody) => {
     
       let sql = 
         `DELETE
-        FROM aLearning.Employees;
+        FROM aLearning.Employees
         WHERE ID = ${data.ID}`;
      
 
