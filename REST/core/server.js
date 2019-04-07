@@ -1,5 +1,7 @@
 const http = require('http');
 const emp = require('../Controllers/employees.js');
+const generalExecute = require('../Controllers/generalExecute.js');
+
 const httpMssgs = require('./httpMssgs.js');
 const settings = require('../settings.js');
 const port = settings.webPort;
@@ -13,6 +15,8 @@ let forwardGET = (req, res) => {
 let forwardPOST = (req, res) => {
   if (req.url === '/employees')
     emp.respondToPOST(req, res);
+  else if (req.url.match(/execute/))            ///////     execute     ///////
+      generalExecute.respondToPOST(req, res); 
   else
     httpMssgs.show404(req, res);
 };

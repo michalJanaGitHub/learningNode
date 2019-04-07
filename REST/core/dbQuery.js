@@ -7,7 +7,7 @@ exports.executeSQL = (sql, callback) => {
   const conn = new sqlDB.ConnectionPool(dbConfig);
 
   conn.connect()
-    .then(() => {
+    .then( () => {
       const req = new sqlDB.Request(conn);
       req.query(sql)
         .then((recordSet) => { 
@@ -16,8 +16,7 @@ exports.executeSQL = (sql, callback) => {
         .catch((err) => { 
           console.log(err);
           callback(null, err);          
-        })
-      ;     
+      });
     })
     .catch( (err) => {
       console.log(err);

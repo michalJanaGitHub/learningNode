@@ -1,4 +1,4 @@
-const db = require('../core/db.js');
+const db = require('../core/dbQuery.js');
 const httpMssgs = require('../core/httpMssgs.js');
 const util = require('util');
 const settings = require('../settings.js');
@@ -13,8 +13,9 @@ let getList = (req, res) => {
       httpMssgs.show500(req,res,err);
     }
     else {
-    }    
       httpMssgs.sendJSON(req,res,data);
+    }    
+      
   });
 };
 let get = (req, res, empNO) => {
@@ -28,8 +29,9 @@ let get = (req, res, empNO) => {
       httpMssgs.show500(req,res,err);
     }
     else {
-    }
       httpMssgs.sendJSON(req,res,data);
+    }
+      
   });
 };
 let add = (req, res, reqBody) => {

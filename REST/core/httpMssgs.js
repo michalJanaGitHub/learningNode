@@ -32,9 +32,9 @@ exports.showHome = (req, res) => {
 exports.sendJSON = (req, res, data) => {
   res.writeHead(200, { "Content-Type": "text/json" });
   if (data) {
-    // res.write(JSON.stringify(data));  
+    res.write(JSON.stringify(data));  
     // res.write(JSON.stringify(data.recordsets)); 
-    res.write(JSON.stringify(data.recordsets[0])); 
+    // res.write(JSON.stringify(data.recordsets[0])); 
   }
   res.end();    
 };
