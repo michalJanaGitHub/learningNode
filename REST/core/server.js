@@ -1,85 +1,48 @@
 const http = require('http');
-const emp = require('../controllers/employee.js');
+const emp = require('../Controllers/employees.js');
 const httpMssgs = require('./httpMssgs.js');
 const settings = require('../settings.js');
 const port = settings.webPort;
 
+let forwardGET = (req, res) => {
+  if (req.url === '/')
+    httpMssgs.showHome(req, res);
+  else if (req.url.match(/employees/))
+    emp.respondToGet(req, res);
+};
+let forwardPOST = (req, res) => {
+  if (req.url === '/employees')
+    emp.respondToPOST(req, res);
+  else
+    httpMssgs.show404(req, res);
+};
+let forwardPUT = (req, res) => {
+  if (req.url === '/employees')
+    emp.respondToPUT(req, res);
+  else
+    httpMssgs.show404(req, res);
+};
+let forwardDELETE = (req, res) => {
+  if (req.url === '/employees')
+    emp.respondToDELETE(req, res);
+  else
+    httpMssgs.show404(req, res);
+  
+};
+
 http.createServer((req, res) => {
   switch (req.method) {
     case "GET":       //select
-      if (req.url === '/') {
-        httpMssgs.showHome(req, res);
-      }
-      else if (req.url === '/employees') {
-        emp.getList(req, res);
-      }
-      else {
-        let empNoPattern = "[0-9]+";
-        let regExp = new RegExp("/employees/" + empNoPattern);
-        if (regExp.test(req.url)) {
-          regExp = new RegExp(empNoPattern);
-          let empNo = regExp.exec(req.url);
-          emp.get(req, res, empNo);          
-        }
-        else {
-          httpMssgs.show404(req, res);
-        }
-        
-      }
+      forwardGET(req, res);
       break;
     case "POST":      //insert
-      if (req.url === '/employees') {
-        let reqBody = '';
-        req.on('data', (data) => {
-          reqBody += data;
-          if (reqBody.length > 1e7) { //10MB
-            httpMssgs.show413(req, res);  // too large
-          }
-        });
-
-        req.on('end', () => {
-          emp.add(req, res, reqBody);
-        });
-      }
-      else {
-        httpMssgs.show404(req, res);
-      }
+      forwardPOST(req, res);
       break;
     case "PUT":       //update
-      if (req.url === '/employees') {
-        let reqBody = '';
-        req.on('data', (data) => {
-          reqBody += data;
-          if (reqBody.length > 1e7) { //10MB
-            httpMssgs.show413(req, res);  // too large
-          }
-        });
-
-        req.on('end', () => {
-          emp.update(req, res, reqBody);
-        });
-      }
-      else {
-        httpMssgs.show404(req, res);
-      }
+      forwardPUT(req, res);
       break;
     case "DELETE":    //delete
-      if (req.url === '/employees') {
-        let reqBody = '';
-        req.on('data', (data) => {
-          reqBody += data;
-          if (reqBody.length > 1e7) { //10MB
-            httpMssgs.show413(req, res);  // too large
-          }
-        });
-
-        req.on('end', () => {
-          emp.delete(req, res, reqBody);
-        });
-      }
-      else {
-        httpMssgs.show404(req, res);
-      }
+      forwardDELETE(req, res);
       break;
     default:
       httpMssgs.show405(req, res);
