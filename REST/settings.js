@@ -1,6 +1,6 @@
 exports.dbConfig = {
   "server" : "localhost\\MSSQLSERVER",
-  "database": "AdventureWorks2017",
+  "database": "REST",
   "user": "mj",
   "password": "mj",
   // port:1433,

@@ -12,8 +12,9 @@ app.get('/submitForm/', (req, res) => {
   res.send('FormSubmitted');
 });
 
-app.post('/', (req, res) => {  
+app.post('/submitForm/', (req, res) => {  
   let data = req.body;
+  console.log(data);
   res.send(`
     <h1>Formulaire envoyé avec data :</h1>
     <p> ${data.username} / ${data.password} / ${data.date}    

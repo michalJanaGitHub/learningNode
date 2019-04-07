@@ -1,2 +1,2 @@
-console.log('app.js');
+console.log('\n Starting app.js');
 require('./core/server.js');
