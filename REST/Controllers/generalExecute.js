@@ -23,8 +23,6 @@ let executeRequest = (req, res, reqBody) => {
     parsedBody = gf.urlToJsonD(decodeURI(reqBody));
     if (parsedBody) {
 
-      console.log(JSON.stringify(requestHeader));
-      console.log(JSON.stringify(parsedBody));
       dbExecute.executeRequest( requestHeader, parsedBody, (result, err) => {       
         if (err) {
           httpMssgs.show500(req,res,err);
