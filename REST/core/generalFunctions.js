@@ -216,19 +216,11 @@ exports.decodeDiacritics = (urlString) => {
   
 exports.urlToJson = (url) => {
   let hash;
-  let myJson = {};
-  let hashes = url.slice(url.indexOf('?') + 1).split('&');
-  for (var i = 0; i < hashes.length; i++) {
-      hash = hashes[i].split('=');
-      myJson[hash[0]] = hash[1];
-  }
-  console.log(url);
-  console.log(myJson);  
-  let myJsonStr = JSON.stringify(myJson);
-  console.log (myJsonStr);
-  myJsonStr = myJsonStr.replace('+', '%20');
-  myJsonStr = decodeDiacritics(myJsonStr);
-  console.log (myJsonStr);
-  myJson = JSON.parse(myJsonStr);
-  return myJson;
+    let myJson = {};
+    let hashes = url.slice(url.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        myJson[hash[0]] = hash[1];
+    }
+    return myJson;
 }; 

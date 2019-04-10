@@ -12,23 +12,25 @@ let executeRequest = (req, res, reqBody) => {
   const userName = user.userName;
   const dateTime = new Date();
   
-  let requestHeader = {
-    appName : appName,
-    userName: userName,
-    dateTime: dateTime
-  };
-
+  let requestHeader = {};
+  requestHeader.requestName = req.url;
+  requestHeader.appName = appName;
+  requestHeader.userName = userName;
+  requestHeader.dateTime = dateTime;
+ 
   try {
     if (!reqBody) throw new Error('Input not valid');
     parsedBody = gf.urlToJsonD(decodeURI(reqBody));
     if (parsedBody) {
 
+      console.log(JSON.stringify(requestHeader));
+      console.log(JSON.stringify(parsedBody));
       dbExecute.executeRequest( requestHeader, parsedBody, (result, err) => {       
         if (err) {
           httpMssgs.show500(req,res,err);
         }
         else {
-          httpMssgs.sendJSON(req,res,result);
+          httpMssgs.sendJSON(req,res,result); 
         }        
       });     
     }
@@ -43,7 +45,7 @@ let executeRequest = (req, res, reqBody) => {
 
 exports.respondToPOST = (req, res) => {  // select
  
-  if (req.url === '/execute') {
+  if (req.url.match(/^\/execute\/[A-Za-z0-9]{3,25}/)) {
     let reqBody = '';
     req.on('data', (data) => {
       reqBody += data;

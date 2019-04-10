@@ -16,12 +16,15 @@ exports.executeRequest = (requestHeader,  requestBody, callBack) => {
   conn.connect()
     .then(() => {
       const req = new sqlDB.Request(conn);
+      
+      console.log(JSON.stringify(requestHeader));
+      console.log(JSON.stringify(parsedBody));
       req.input('p_RequestHeader', sqlDB.NVarChar(64000), JSON.stringify(requestHeader));
       req.input('p_RequestBody', sqlDB.NVarChar(64000), JSON.stringify(requestBody));
 
       req.execute('app.p_ExecuteRequest')
         .then((result) => {   
-          console.log(JSON.parse(result));
+          console.log(result);
           callBack(result);
         })
         .catch((err) => {
