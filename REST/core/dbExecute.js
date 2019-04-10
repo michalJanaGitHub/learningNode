@@ -1,20 +1,27 @@
 const sqlDB = require('mssql');
 const settings = require('../settings');
 const dbConfig = settings.dbConfig;
+const user = require('./user.js');
 
-exports.executeRequest = (Code, jsonBody, Description, callBack) => {
+
+
+
+exports.executeRequest = (requestHeader,  requestBody, callBack) => {
+  const userName = user.userName;
+  const appName = settings.appName;
+
 
   const conn = new sqlDB.ConnectionPool(dbConfig);
 
   conn.connect()
     .then(() => {
       const req = new sqlDB.Request(conn);
-      req.input('p_Code', sqlDB.VarChar(100), Code);
-      req.input('p_Body', sqlDB.VarChar(65400), jsonBody);
-      req.input('p_Description', sqlDB.VarChar(100), Description);
+      req.input('p_RequestHeader', sqlDB.NVarChar(64000), JSON.stringify(requestHeader));
+      req.input('p_RequestBody', sqlDB.NVarChar(64000), JSON.stringify(requestBody));
 
       req.execute('app.p_ExecuteRequest')
-        .then((result) => {         
+        .then((result) => {   
+          console.log(JSON.parse(result));
           callBack(result);
         })
         .catch((err) => {

@@ -1,25 +1,3 @@
-// let fs = require('fs');
-// let path = require('path');
-// let settings = require('../settings.js');
-
-// let serveStaticFile = (req, res, fileName) => {
-//   let fullPath = '';
-//   if (!fileName) {
-//     fullPath = req.url;
-//   }
-//   else {
-//     fullPath = fileName;    
-//   }  
-//   fullPath = path.join(__dirname + '/..', 'public', fullPath);
-//   console.log(fullPath);
-
-//   let html = fs.readFileSync(fullPath, 'UTF-8');
-//   console.log(html);
-
-//   res.writeHead(200, { "Content-Type": "text/html" });
-//   res.write(html);
-
-// };
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
@@ -70,6 +48,9 @@ let serveStaticFile = (req, res, fileName) => {
     }
   });
 };
+exports.serveStaticFile = (req, res) => {
+  serveStaticFile(req, res);
+};
 
 exports.showHome = (req, res) => {
   if (settings.httpMssgsFormat === "HTML") {
@@ -85,47 +66,6 @@ exports.showHome = (req, res) => {
     res.end(); 
   }
 };
-
-// exports.showHomeFunctional = (req, res) => {
-//   if (settings.httpMssgsFormat === "HTML") {
-//     // serveStaticFile(req, res, 'index.html'); 
-//     res.writeHead(200, { "Content-Type": "text/html" });
-//     res.write(`
-//     <html>
-//     <head>
-//       <!-- <link rel='stylesheet' href='style.css'> -->
-//     </head>
-//     <body>
-//       <h1>Get method</h1>
-//       <form action="/submitForm/" method="GET">
-//         <input type="text" name="username"/>
-//         <input type="password" name="password"/>
-//         <input type="date" name="date" />
-//         <input type="submit" name="submit">
-//       </form>
-//       <h1>Post method</h1>
-//       <form action="/submitForm/" method="POST">
-//         <input type="text" name="username"/>
-//         <input type="password" name="password"/>
-//         <input type="date" name="date" />
-//         <input type="submit" name="submit">
-//       </form>
-  
-//     </body>
-  
-//     </html>`);
-    
-//   }
-//   else if (settings.httpMssgsFormat === "JSON"){
-//     res.writeHead(200, { "Content-Type": "application/json" });
-//     res.write(JSON.stringify([
-//       { url: "/employees", operation: "GET", description: "To list all Employees" },
-//       { url: "/employees/empno", operation: "GET", description: "To search for an employee" },
-//       ]
-//     ));
-//   }
-//   res.end();    
-// };
 
 let sendJSON = (req, res, data) => {
   res.writeHead(200, { "Content-Type": "text/json" });

@@ -1,26 +1,34 @@
 const dbExecute = require('../core/dbExecute.js');
 const httpMssgs = require('../core/httpMssgs.js');
-const util = require('util');
 const settings = require('../settings.js');
+const user = require('../core/user.js');
+const gf = require('../core/generalFunctions.js');
+const url = require('url');
 
-// console.log(reqBody);
-// dbExecute.executeRequest('test', 'test', 'desc', (result) => {
-//   console.log(result);
-// });
 
 let executeRequest = (req, res, reqBody) => {
+
+  const appName = settings.appName;
+  const userName = user.userName;
+  const dateTime = new Date();
+  
+  let requestHeader = {
+    appName : appName,
+    userName: userName,
+    dateTime: dateTime
+  };
+
   try {
     if (!reqBody) throw new Error('Input not valid');
-    let data = JSON.parse(reqBody);
-    if (data) {
+    parsedBody = gf.urlToJsonD(decodeURI(reqBody));
+    if (parsedBody) {
 
-      dbExecute.executeRequest('test', 'test', 'desc', (result, err) => {       
+      dbExecute.executeRequest( requestHeader, parsedBody, (result, err) => {       
         if (err) {
           httpMssgs.show500(req,res,err);
         }
         else {
           httpMssgs.sendJSON(req,res,result);
-          // httpMssgs.send200(req,res);
         }        
       });     
     }
@@ -28,8 +36,7 @@ let executeRequest = (req, res, reqBody) => {
   }
   catch(ex) {
     httpMssgs.show500(req, res, ex);
-  } 
-
+  }
 };
 
 
@@ -50,8 +57,5 @@ exports.respondToPOST = (req, res) => {  // select
   }
   else {
       httpMssgs.show404(req, res);
-  }    
-
-
+  }
 };
-

@@ -1,13 +1,15 @@
-<html>
+<html lang="fr">
   <head>
+    <meta charset="UTF-8">
     <link rel='stylesheet' href='style.css'>
   </head>
   <body>
     <h1>Post method</h1>
-    <form action="/submitForm/" method="POST">
-      <input type="text" name="username"/>
-      <input type="password" name="password"/>
-      <input type="date" name="date" /> 
+    <form action="/execute" method="POST" enctype="application/x-www-form-urlencoded">
+      <label for="name">Name:</label>
+      <input type="name" name="name"/>
+      <label for="e-mail">Email:</label>
+      <input type="e-mail" name="e-mail"/>
       <input type="submit" name="submit">
     </form>
 

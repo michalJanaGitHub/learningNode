@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "test1": "cls",
-    "start": "Start https://localhost:3000 && Start http://localhost:3000 && nodemon REST/app.js"
+    "start": "Start https://localhost:3000 && Start http://localhost:3000 && nodemon REST/app.js",
+    "scrib": "nodemon scribble.js"
   },
   "repository": {
     "type": "git",
