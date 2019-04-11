@@ -1,0 +1,8 @@
+C:\Users\Lenovo\Documents\GIT\learningNode\TTOPraha\SQL SERVER\Database1\Database1\bin\Debug\Database1.dacpac
+C:\Users\Lenovo\Documents\GIT\learningNode\TTOPraha\SQL SERVER\Database1\Database1\obj\Debug\Database1.sqlprojAssemblyReference.cache
+C:\Users\Lenovo\Documents\GIT\learningNode\TTOPraha\SQL SERVER\Database1\Database1\obj\Debug\Model.xml
+C:\Users\Lenovo\Documents\GIT\learningNode\TTOPraha\SQL SERVER\Database1\Database1\obj\Debug\refactor.xml
+C:\Users\Lenovo\Documents\GIT\learningNode\TTOPraha\SQL SERVER\Database1\Database1\obj\Debug\postdeploy.sql
+C:\Users\Lenovo\Documents\GIT\learningNode\TTOPraha\SQL SERVER\Database1\Database1\obj\Debug\predeploy.sql
+C:\Users\Lenovo\Documents\GIT\learningNode\TTOPraha\SQL SERVER\Database1\Database1\obj\Debug\Database1.dll
+C:\Users\Lenovo\Documents\GIT\learningNode\TTOPraha\SQL SERVER\Database1\Database1\obj\Debug\Database1.pdb
