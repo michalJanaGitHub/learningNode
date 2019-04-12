@@ -1,7 +1,7 @@
 const db = require('../core/dbQuery.js');
 const httpMssgs = require('../core/httpMssgs.js');
 const util = require('util');
-const settings = require('../settings.js');
+const settings = require('../../settings.js');
 
 
 

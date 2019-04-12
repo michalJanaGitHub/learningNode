@@ -1,5 +1,5 @@
 const sqlDB = require('mssql');
-const settings = require('../settings');
+const settings = require('../../settings');
 const dbConfig = settings.dbConfig;
 
 exports.executeSQL = (sql, callback) => {

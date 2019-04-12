@@ -11,3 +11,5 @@ exports.webPort = 9000;
 exports.httpMssgsFormat = "HTML"; //JSON, HTML
 exports.debugMode = true; //
 exports.appName = 'learningNodeAPP';
+exports.logExecuteRequests = true;
+

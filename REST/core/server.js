@@ -1,9 +1,8 @@
 const http = require('http');
 const emp = require('../Controllers/employees.js');
 const generalExecute = require('../Controllers/generalExecute.js');
-
 const httpMssgs = require('./httpMssgs.js');
-const settings = require('../settings.js');
+const settings = require('../../settings.js');
 const port = settings.webPort;
 
 let forwardGET = (req, res) => {

@@ -1,6 +1,8 @@
 const sqlDB = require('mssql');
-const settings = require('../settings');
+const settings = require('../../settings.js');
 const dbConfig = settings.dbConfig;
+const logger = require('../../logger.js');
+
 
 exports.executeRequest = (requestHeader,  requestBody, callBack) => {
   const conn = new sqlDB.ConnectionPool(dbConfig);
@@ -11,7 +13,6 @@ exports.executeRequest = (requestHeader,  requestBody, callBack) => {
       
       req.input('p_RequestHeader', sqlDB.NVarChar(64000), JSON.stringify(requestHeader));
       req.input('p_RequestBody', sqlDB.NVarChar(64000), JSON.stringify(requestBody));
-      console.log('execute request sent');
       req.execute('app.p_ExecuteRequest')
         .then((result) => {
           console.log('Answer received:');
@@ -21,7 +22,9 @@ exports.executeRequest = (requestHeader,  requestBody, callBack) => {
         .catch((err) => {
           // console. log(err);
           callBack(null, err);          
-        });  
+        });
+      console.log('execute request sent');
+
     })
     .catch( (err) => {
       // console.log(err);

@@ -184,7 +184,7 @@ let decodeDiacritics = (urlString) => {
     let char = '';
     let l = urlString.length;
     
-    for (i = 0; i < l; i++) {
+    for (let i = 0; i < l; i++) {
       char = urlString.substring(i, i + 1);
       if (char === '%') {
         let tran = urlDiacriticsDict[urlString.substring(i, i + 3)];
@@ -207,7 +207,7 @@ exports.decodeDiacritics = (urlString) => {
     let myJson = {};
     url = decodeDiacritics(url);
     let hashes = url.slice(url.indexOf('?') + 1).split('&');
-    for (var i = 0; i < hashes.length; i++) {
+    for (let i = 0; i < hashes.length; i++) {
         hash = hashes[i].split('=');
         myJson[hash[0]] = hash[1];
     }
@@ -218,7 +218,7 @@ exports.urlToJson = (url) => {
   let hash;
     let myJson = {};
     let hashes = url.slice(url.indexOf('?') + 1).split('&');
-    for (var i = 0; i < hashes.length; i++) {
+    for (let i = 0; i < hashes.length; i++) {
         hash = hashes[i].split('=');
         myJson[hash[0]] = hash[1];
     }

@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const url = require('url');
-const settings = require('../settings.js');
+const settings = require('../../settings.js');
 
 let serveStaticFile = (req, res, fileName) => {
 
@@ -10,7 +9,7 @@ let serveStaticFile = (req, res, fileName) => {
   if (!fileName)  relPath = req.url;
   else  relPath = fileName;    
 
-  const fullPath = path.join(__dirname + '/..', 'public', relPath);
+  const fullPath = path.join(__dirname + '/../..', 'public', relPath);
 
   const extension = path.parse(relPath).ext;
   const contentTypeMap = {
