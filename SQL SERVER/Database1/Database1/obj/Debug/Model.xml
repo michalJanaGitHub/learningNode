@@ -166,20 +166,43 @@ BEGIN
 	SET XACT_ABORT, NOCOUNT ON
 
 	BEGIN TRY
-	BEGIN TRANSACTION		
-	
-	DECLARE @RequestName nvarchar(50)
-		
+	BEGIN TRANSACTION
+
+		DECLARE @Email varchar(100)
 		SELECT
-			RequestName
+			  @Email = Email
 		FROM OPENJSON(@p_RequestBody)
 		WITH (
-			RequestName nvarchar(50) '$.requestName'		
-		) AS RN
-		
-	
-		IF @RequestName =   '/execute/saveSignUpForm'
-		SELECT RequestName = 'Request '  + @RequestName + ' was executed.' 
+			  [Name] nvarchar(100) '$.name'
+			, Email Varchar(100) '$.email'
+		) AS RB
+
+		IF NOT EXISTS(
+			SELECT 1 
+			FROM Forms.t_SignUp
+			WHERE Email = @Email
+		)
+			BEGIN
+				INSERT INTO Forms.t_SignUp
+					([Name], Email)
+				SELECT
+					  [Name]
+					, Email
+				FROM OPENJSON(@p_RequestBody)
+				WITH (
+					  [Name] nvarchar(100) '$.name'
+					, Email varchar(100) '$.email'
+				) AS RB
+
+				SELECT
+					  Result = 'OK'
+					, [Message] = 'User was registerd successfully'
+			END			
+		ELSE
+			SELECT
+				  Result = 'Err'
+				, [Message] = 'Email already registered'			
+		 
 	COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH
@@ -192,7 +215,19 @@ END]]></Value>
 			<Property Name="IsAnsiNullsOn" Value="True" />
 			<Relationship Name="BodyDependencies">
 				<Entry>
-					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+					<References ExternalSource="BuiltIns" Name="[varchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[Forms].[t_SignUp]" />
+				</Entry>
+				<Entry>
+					<References Name="[Forms].[t_SignUp].[Email]" />
+				</Entry>
+				<Entry>
+					<References Name="[Forms].[t_SignUp].[Name]" />
+				</Entry>
+				<Entry>
+					<References Name="[Forms].[t_SignUp].[Email]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[p_Error_Handler]" />
@@ -239,7 +274,7 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="180" />
-				<Property Name="Length" Value="823" />
+				<Property Name="Length" Value="1237" />
 				<Property Name="StartLine" Value="1" />
 				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;MJ&#xD;&#xA;-- Create date: 2019-04-11&#xD;&#xA;-- Description:&#x9;saves Sign up form&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE PROCEDURE [app].[p_Execute_SaveSignUpForm] (&#xD;&#xA;&#x9;@p_RequestHeader varchar(max)&#xD;&#xA;&#x9;, @p_RequestBody nvarchar(max)&#xD;&#xA;)&#xD;&#xA;AS" />
@@ -276,9 +311,15 @@ BEGIN
 		)
 	
 		IF @RequestName =   '/execute/saveSignUpForm'
-		SELECT RequestName = 'Request '  + @RequestName + ' was executed.' 
+			EXEC app.p_Execute_SaveSignUpForm @p_RequestHeader = @p_RequestHeader, @p_RequestBody = @p_RequestBody
+		ELSE	
+			SELECT
+				  Result = 'Err'
+				, [Message] = 'Unknown request'
+
 	COMMIT TRANSACTION
 	END TRY
+
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION
 		EXEC dbo.p_Error_Handler
@@ -310,6 +351,15 @@ END]]></Value>
 				</Entry>
 				<Entry>
 					<References Name="[app].[p_ExecuteRequest].[@p_RequestBody]" />
+				</Entry>
+				<Entry>
+					<References Name="[app].[p_Execute_SaveSignUpForm]" />
+				</Entry>
+				<Entry>
+					<References Name="[app].[p_Execute_SaveSignUpForm].[@p_RequestHeader]" />
+				</Entry>
+				<Entry>
+					<References Name="[app].[p_Execute_SaveSignUpForm].[@p_RequestBody]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[p_Error_Handler]" />
@@ -362,7 +412,7 @@ END]]></Value>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
 				<Property Name="CreateOffset" Value="220" />
-				<Property Name="Length" Value="1151" />
+				<Property Name="Length" Value="1270" />
 				<Property Name="StartLine" Value="1" />
 				<Property Name="StartColumn" Value="1" />
 				<Property Name="HeaderContents" Value="-- =============================================&#xD;&#xA;-- Author:&#x9;&#x9;MJ&#xD;&#xA;-- Create date: 2019-04-07&#xD;&#xA;-- Description:&#x9;Basic procedure for receiving requests from an application&#xD;&#xA;-- =============================================&#xD;&#xA;CREATE PROCEDURE [app].[p_ExecuteRequest] (&#xD;&#xA;&#x9;@p_RequestHeader varchar(max)&#xD;&#xA;&#x9;, @p_RequestBody nvarchar(max)&#xD;&#xA;)&#xD;&#xA;AS" />
@@ -1021,6 +1071,7 @@ END]]></Value>
 				<Entry>
 					<Element Type="SqlSimpleColumn" Name="[Forms].[t_SignUp].[ID]">
 						<Property Name="IsNullable" Value="False" />
+						<Property Name="IsIdentity" Value="True" />
 						<Relationship Name="TypeSpecifier">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -1089,6 +1140,42 @@ END]]></Value>
 			<Relationship Name="Schema">
 				<Entry>
 					<References Name="[Forms]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlPermissionStatement" Name="[Grant.Execute.Object].[appREST].[dbo].[app].[p_ExecuteRequest]">
+			<Property Name="Permission" Value="1070" />
+			<Relationship Name="Grantee">
+				<Entry>
+					<References Name="[appREST]" Disambiguator="3" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Grantor">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="SecuredObject">
+				<Entry>
+					<References Name="[app].[p_ExecuteRequest]" />
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlPermissionStatement" Name="[Grant.Execute.Object].[appREST].[dbo].[app].[p_ExecuteRequest_test]">
+			<Property Name="Permission" Value="1070" />
+			<Relationship Name="Grantee">
+				<Entry>
+					<References Name="[appREST]" Disambiguator="3" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Grantor">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="SecuredObject">
+				<Entry>
+					<References Name="[app].[p_ExecuteRequest_test]" />
 				</Entry>
 			</Relationship>
 		</Element>

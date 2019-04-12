@@ -11,7 +11,9 @@ let executeRequest = (req, res, reqBody) => {
   const appName = settings.appName;
   const userName = user.userName;
   const dateTime = new Date();
-  
+
+  console.log(reqBody);
+
   let requestHeader = {};
   requestHeader.requestName = req.url;
   requestHeader.appName = appName;

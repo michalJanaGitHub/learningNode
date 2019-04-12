@@ -12,20 +12,43 @@ BEGIN
 	SET XACT_ABORT, NOCOUNT ON
 
 	BEGIN TRY
-	BEGIN TRANSACTION		
-	
-	DECLARE @RequestName nvarchar(50)
-		
+	BEGIN TRANSACTION
+
+		DECLARE @Email varchar(100)
 		SELECT
-			RequestName
+			  @Email = Email
 		FROM OPENJSON(@p_RequestBody)
 		WITH (
-			RequestName nvarchar(50) '$.requestName'		
-		) AS RN
-		
-	
-		IF @RequestName =   '/execute/saveSignUpForm'
-		SELECT RequestName = 'Request '  + @RequestName + ' was executed.' 
+			  [Name] nvarchar(100) '$.name'
+			, Email Varchar(100) '$.email'
+		) AS RB
+
+		IF NOT EXISTS(
+			SELECT 1 
+			FROM Forms.t_SignUp
+			WHERE Email = @Email
+		)
+			BEGIN
+				INSERT INTO Forms.t_SignUp
+					([Name], Email)
+				SELECT
+					  [Name]
+					, Email
+				FROM OPENJSON(@p_RequestBody)
+				WITH (
+					  [Name] nvarchar(100) '$.name'
+					, Email varchar(100) '$.email'
+				) AS RB
+
+				SELECT
+					  Result = 'OK'
+					, [Message] = 'User was registerd successfully'
+			END			
+		ELSE
+			SELECT
+				  Result = 'Err'
+				, [Message] = 'Email already registered'			
+		 
 	COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH

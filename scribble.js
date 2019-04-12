@@ -6,4 +6,3 @@ let js = {};
 js.name = 'jmeno';
 
 console.log(js);
-y

@@ -48,9 +48,7 @@ let serveStaticFile = (req, res, fileName) => {
     }
   });
 };
-exports.serveStaticFile = (req, res) => {
-  serveStaticFile(req, res);
-};
+exports.serveStaticFile = serveStaticFile;
 
 exports.showHome = (req, res) => {
   if (settings.httpMssgsFormat === "HTML") {
@@ -70,23 +68,22 @@ exports.showHome = (req, res) => {
 let sendJSON = (req, res, data) => {
   res.writeHead(200, { "Content-Type": "text/json" });
   if (data) {
-    res.write(JSON.stringify(data));  
+    res.end(JSON.stringify(data));
     // res.write(JSON.stringify(data.recordsets)); 
     // res.write(JSON.stringify(data.recordsets[0])); 
   }
-  res.end();    
+  else {
+    res.end();
+  }
 };
-exports.sendJSON = (req, res) => {
-  sendJSON(req, res);
-};
+exports.sendJSON = sendJSON;
+
 
 let send200 = (req, res, err) => {
     res.writeHead(200,{ "Content-Type": "text/html" });
     res.end();
 };
-exports.send200 = (req, res) => {
-  send200(req, res);
-};
+exports.send200 = send200;
 
 let show500 = (req, res, err) => {  //internal error
   if (settings.httpMssgsFormat === "HTML") {
@@ -109,9 +106,7 @@ let show500 = (req, res, err) => {  //internal error
   }
   res.end();    
 };
-exports.show500 = (req, res) => {
-  show500(req, res);
-};
+exports.show500 = show500;
 
 let show405 = (req, res) => {   //method not supported
   if (settings.httpMssgsFormat === "HTML") {  
@@ -134,9 +129,7 @@ let show405 = (req, res) => {   //method not supported
   }
   res.end();    
 };
-exports.show405 = (req, res) => {
-  show405(req, res);
-};
+exports.show405 = show405;
 
 let show404 = (req, res) => {   // Resource not found
   if (settings.httpMssgsFormat === "HTML") {
@@ -159,11 +152,9 @@ let show404 = (req, res) => {   // Resource not found
   }
   res.end();    
 };
-exports.show404 = (req, res) => {
-  show404(req, res);
-};
+exports.show404 = show404;
 
-exports.show413 = (req, res) => {   //Request entity too large
+let show413 = (req, res) => {   //Request entity too large
   if (settings.httpMssgsFormat === "HTML") {
     res.writeHead(413, "Request entity too large", { "Content-Type": "text/html" });
     res.write(`
@@ -185,6 +176,4 @@ exports.show413 = (req, res) => {   //Request entity too large
   res.end();    
 
 };
-exports.show413 = (req, res) => {
-  show413(req, res);
-};
+exports.show413 = show413;

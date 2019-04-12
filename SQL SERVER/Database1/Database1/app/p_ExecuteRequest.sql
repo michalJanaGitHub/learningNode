@@ -36,9 +36,15 @@ BEGIN
 		)
 	
 		IF @RequestName =   '/execute/saveSignUpForm'
-		SELECT RequestName = 'Request '  + @RequestName + ' was executed.' 
+			EXEC app.p_Execute_SaveSignUpForm @p_RequestHeader = @p_RequestHeader, @p_RequestBody = @p_RequestBody
+		ELSE	
+			SELECT
+				  Result = 'Err'
+				, [Message] = 'Unknown request'
+
 	COMMIT TRANSACTION
 	END TRY
+
 	BEGIN CATCH
 		IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION
 		EXEC dbo.p_Error_Handler
