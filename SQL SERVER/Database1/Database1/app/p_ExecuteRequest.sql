@@ -4,7 +4,8 @@
 -- Description:	Basic procedure for receiving requests from an application
 -- =============================================
 CREATE PROCEDURE [app].[p_ExecuteRequest] (
-	@p_RequestHeader varchar(max)
+	  @p_ERId varchar(25)
+	, @p_RequestHeader varchar(max)
 	, @p_RequestBody nvarchar(max)
 )
 AS
@@ -14,9 +15,10 @@ BEGIN
 	DECLARE @ExecuteRequestsID int;	
 
 	INSERT INTO app.t_ExecuteRequests
-		([Header], [Body])
+		(ERId, [Header], [Body])
 	VALUES (
-			@p_RequestHeader
+		  @p_ERId
+		, @p_RequestHeader
 		, @p_RequestBody
 	)
 
@@ -25,19 +27,18 @@ BEGIN
 	BEGIN TRY
 	BEGIN TRANSACTION
 		DECLARE @RequestName nvarchar(50)
-		DECLARE @ERId varchar(25)
-
 		SELECT
 			  @RequestName = RequestName
-			, @ERId = ERId		
 		FROM OPENJSON(@p_RequestHeader)
 		WITH (
 			  RequestName nvarchar(50) '$.requestName'	
-			, ERId varchar(25) '$.eRId'	
 		) AS RN
 	
 		IF @RequestName = '/execute/saveSignUpForm'
-			EXEC app.p_Execute_SaveSignUpForm @p_RequestHeader = @p_RequestHeader, @p_RequestBody = @p_RequestBody
+			EXEC app.p_Execute_SaveSignUpForm 
+				  @p_ERId
+				, @p_RequestHeader = @p_RequestHeader
+				, @p_RequestBody = @p_RequestBody
 		ELSE	
 			SELECT
 				  Result = 'Err'

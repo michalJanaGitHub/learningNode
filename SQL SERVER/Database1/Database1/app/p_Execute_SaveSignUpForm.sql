@@ -4,7 +4,8 @@
 -- Description:	saves Sign up form
 -- =============================================
 CREATE PROCEDURE [app].[p_Execute_SaveSignUpForm] (
-	@p_RequestHeader varchar(max)
+	  @p_ERId varchar(25)
+	, @p_RequestHeader varchar(max)
 	, @p_RequestBody nvarchar(max)
 )
 AS
@@ -12,12 +13,12 @@ BEGIN
 	SET XACT_ABORT, NOCOUNT ON
 
 	BEGIN TRY
-	BEGIN TRANSACTION
-		
+	BEGIN TRANSACTION	
 
-		DECLARE @Email varchar(100)
+		DECLARE 
+			@Email varchar(100)
 		SELECT
-			  @Email = Email
+			    @Email = Email
 		FROM OPENJSON(@p_RequestBody)
 		WITH (
 			  [Name] nvarchar(100) '$.name'
@@ -41,16 +42,16 @@ BEGIN
 					, Email varchar(100) '$.email'
 				) AS RB
 
-				select xxx=1
 				SELECT
-					  Result = 'OK'
+					  ERId = @p_ERId
+					, Result = 'OK'
 					, [Message] = 'User was registerd successfully'
 			END			
 		ELSE
 			BEGIN
-				select xxx=1				
 				SELECT
-					  Result = 'Err'
+					  ERId = @p_ERId
+					, Result = 'Err'
 					, [Message] = 'Email already registered'			
 			END
 	COMMIT TRANSACTION
