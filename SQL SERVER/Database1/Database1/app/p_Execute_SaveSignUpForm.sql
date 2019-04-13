@@ -13,6 +13,7 @@ BEGIN
 
 	BEGIN TRY
 	BEGIN TRANSACTION
+		
 
 		DECLARE @Email varchar(100)
 		SELECT
@@ -40,15 +41,18 @@ BEGIN
 					, Email varchar(100) '$.email'
 				) AS RB
 
+				select xxx=1
 				SELECT
 					  Result = 'OK'
 					, [Message] = 'User was registerd successfully'
 			END			
 		ELSE
-			SELECT
-				  Result = 'Err'
-				, [Message] = 'Email already registered'			
-		 
+			BEGIN
+				select xxx=1				
+				SELECT
+					  Result = 'Err'
+					, [Message] = 'Email already registered'			
+			END
 	COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH

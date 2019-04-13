@@ -1,9 +1,26 @@
-// console.log('execute/ahoj8769'.match(/^execute\/[A-Za-z0-9]{3,10}/));
+console.log('\nScribble started!');
 
 
-const logger = require('./logger');
-// logger.request('test');
-// logger.request('test2');   
+// function start () {
+//   (function middle () {
+//     (function end () {
+//       console.lg('test');
+//      })();
 
-let id = logger.executeRequest('msg', 'header', 'body');
-console.log(id);
+//    })();
+
+// }
+ 
+// start();
+
+
+function accacio(name); {
+
+
+console.lg(name + ' Potter!');
+
+};
+
+
+
+someOtherFunctionName('hello');

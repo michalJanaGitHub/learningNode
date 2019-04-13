@@ -11,23 +11,20 @@ let executeRequest = (req, res, reqBody) => {
   const userName = user.userName;
   const dateTime = new Date();
 
-  console.log(reqBody);
-
-  let requestHeader = {};
-  requestHeader.requestID = '';
-  requestHeader.requestName = req.url;
-  requestHeader.appName = appName;
-  requestHeader.userName = userName;
-  requestHeader.dateTime = dateTime;
+  let eRId = 'eRId:' + new Date().toISOString() + ':' + Math.round(1000*Math.random()); // fabricating a unique ID 
+  let requestHeader = {
+    eRId : eRId,
+    requestName : req.url,
+    appName : appName,
+    userName : userName,
+    dateTime : dateTime,
+  };
  
   try {
     if (!reqBody) throw new Error('Input not valid');
     let parsedBody = gf.urlToJsonD(decodeURI(reqBody));
     if (parsedBody) {
-      
-      let ERID = logger.executeRequest(requestHeader, parsedBody);
-      requestHeader.requestID = ERID;
-      dbExecute.executeRequest(requestHeader, parsedBody, (result, err) => {       
+        dbExecute.executeRequest(requestHeader, parsedBody, (result, err) => {       
         if (err) {
           httpMssgs.show500(req,res,err);
         }

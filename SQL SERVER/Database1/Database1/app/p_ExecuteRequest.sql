@@ -25,17 +25,18 @@ BEGIN
 	BEGIN TRY
 	BEGIN TRANSACTION
 		DECLARE @RequestName nvarchar(50)
+		DECLARE @ERId varchar(25)
 
-		SET @requestName = (
-			SELECT
-				RequestName
-			FROM OPENJSON(@p_RequestHeader)
-			WITH (
-				RequestName nvarchar(50) '$.requestName'		
-			) AS RN
-		)
+		SELECT
+			  @RequestName = RequestName
+			, @ERId = ERId		
+		FROM OPENJSON(@p_RequestHeader)
+		WITH (
+			  RequestName nvarchar(50) '$.requestName'	
+			, ERId varchar(25) '$.eRId'	
+		) AS RN
 	
-		IF @RequestName =   '/execute/saveSignUpForm'
+		IF @RequestName = '/execute/saveSignUpForm'
 			EXEC app.p_Execute_SaveSignUpForm @p_RequestHeader = @p_RequestHeader, @p_RequestBody = @p_RequestBody
 		ELSE	
 			SELECT

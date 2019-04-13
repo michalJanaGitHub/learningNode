@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const settings = require('../../settings.js');
+const util = require('util');
+
+const readFile = util.promisify(fs.readFile);
+
+
 
 let serveStaticFile = (req, res, fileName) => {
 
@@ -35,18 +40,20 @@ let serveStaticFile = (req, res, fileName) => {
   }
   
   // read file from file system
-  fs.readFile(fullPath, (err, data) => {
-    if (err) {
-      console.log(err);
-      show500(req, res, err);
-    } else {
+  readFile(fullPath)
+    .then( (data) => {
       // if the file is found, set Content-type and send data
       // res.setHeader('Content-type', map[extension] || 'text/plain');
       res.writeHead(200, { "Content-Type": contentType });
       res.end(data);
-    }
-  });
+    })
+    .catch( (err) => {
+    console.log(err);
+    show500(req, res, err);
+    });
+
 };
+
 exports.serveStaticFile = serveStaticFile;
 
 exports.showHome = (req, res) => {

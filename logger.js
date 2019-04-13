@@ -18,13 +18,22 @@ exports.error = (msg) => {
   errorStream.write(message);
 };
 
-exports.executeRequest = (reqHeader, reqBody) => {
+exports.executeRequest = (eRId, reqHeader, reqBody) => {
   
-  let logID = 'ERID:' + new Date().toISOString() + ':' + Math.round(100*Math.random()); // fabricating a unique ID 
   if (sett.logExecuteRequests) {
     let message = 
-    `\n${logID}\nRequestHeader:\n ${JSON.stringify(reqHeader)}\nRequestBody:\n ${JSON.stringify(reqBody)}\n`;
+    `\n${eRId}\nRequestHeader:\n${JSON.stringify(reqHeader)}\nRequestBody:\n ${JSON.stringify(reqBody)}\n`;
     execRequestsStream.write(message);
-  } 
-  return logID;
+  }
+  return eRId;
+};
+
+exports.executeRequestResponse = (response) => {
+  let eRId = new Date().toISOString();
+    
+  if (sett.logERResponses) {
+    let message =
+    `\n${eRId}\n${response}\nResponse:\n${JSON.stringify(response[0])}\n`;
+    execRequestsStream.write(message);
+  }
 };

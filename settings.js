@@ -11,5 +11,12 @@ exports.webPort = 9000;
 exports.httpMssgsFormat = "HTML"; //JSON, HTML
 exports.debugMode = true; //
 exports.appName = 'learningNodeAPP';
-exports.logExecuteRequests = true;
 
+exports.logExecuteRequests = true;
+exports.logERResponses = true;
+exports.writeDebugToConsole = true;
+
+
+
+// mongoDB:
+// mongodb+srv://MichalJana:<password>@cluster0-devf2.mongodb.net/test?retryWrites=true
